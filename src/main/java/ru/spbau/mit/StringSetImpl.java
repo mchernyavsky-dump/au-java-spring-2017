@@ -94,7 +94,7 @@ public class StringSetImpl implements StringSet {
 
     private int howManyStartsWithPrefix(@NotNull final String prefix,
                                         final int offset) {
-        if (offset == prefix.length() ) {
+        if (offset == prefix.length()) {
             return numTerminalsInSubset;
         }
 
