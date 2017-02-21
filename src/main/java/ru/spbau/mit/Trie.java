@@ -64,8 +64,8 @@ public class Trie implements StringSet {
         }
 
         final int index = convertCharToIndex(element.charAt(offset));
-        return children[index] != null &&
-               children[index].contains(element, offset + 1);
+        return children[index] != null
+                && children[index].contains(element, offset + 1);
 
     }
 

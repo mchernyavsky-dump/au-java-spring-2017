@@ -80,7 +80,7 @@ public class TrieTest {
         trie.add("aaa");
 
         assertEquals(trie.size(), trie.howManyStartsWithPrefix(""));
-        assertEquals(4, trie.howManyStartsWithPrefix("a"));
+        assertEquals(trie.size(), trie.howManyStartsWithPrefix("a"));
         assertEquals(2, trie.howManyStartsWithPrefix("aa"));
         assertEquals(1, trie.howManyStartsWithPrefix("ab"));
         assertEquals(1, trie.howManyStartsWithPrefix("aaa"));
