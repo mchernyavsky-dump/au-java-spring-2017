@@ -2,10 +2,10 @@ package ru.spbau.mit;
 
 import org.jetbrains.annotations.NotNull;
 
-public class Trie implements StringSet {
+public class StringSetImpl implements StringSet {
     private static final int ALPHABET_SIZE = 52;
 
-    private Trie[] children = new Trie[ALPHABET_SIZE];
+    private StringSetImpl[] children = new StringSetImpl[ALPHABET_SIZE];
     private boolean isTerminal;
     private int numTerminalsInSubset;
 
@@ -47,7 +47,7 @@ public class Trie implements StringSet {
 
         final int index = convertCharToIndex(element.charAt(offset));
         if (children[index] == null) {
-            children[index] = new Trie();
+            children[index] = new StringSetImpl();
         }
 
         final boolean result = children[index].add(element, offset + 1);
