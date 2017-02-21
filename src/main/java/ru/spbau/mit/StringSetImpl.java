@@ -36,12 +36,12 @@ public class StringSetImpl implements StringSet {
 
     private boolean add(@NotNull final String element, final int offset) {
         if (element.length() == offset) {
-            if (isTerminal) {
-                return false;
-            } else {
-                numTerminalsInSubset++;
+            if (!isTerminal) {
                 isTerminal = true;
+                numTerminalsInSubset++;
                 return true;
+            } else {
+                return false;
             }
         }
 
@@ -64,13 +64,12 @@ public class StringSetImpl implements StringSet {
         }
 
         final int index = convertCharToIndex(element.charAt(offset));
-        return children[index] != null
+        return !(children[index] == null || children[index].size() == 0)
                 && children[index].contains(element, offset + 1);
-
     }
 
     private boolean remove(@NotNull final String element, final int offset) {
-        if (element.length() == offset) {
+        if (offset == element.length()) {
             if (isTerminal) {
                 isTerminal = false;
                 numTerminalsInSubset--;
@@ -95,12 +94,12 @@ public class StringSetImpl implements StringSet {
 
     private int howManyStartsWithPrefix(@NotNull final String prefix,
                                         final int offset) {
-        if (prefix.length() == offset) {
+        if (offset == prefix.length() ) {
             return numTerminalsInSubset;
         }
 
         final int index = convertCharToIndex(prefix.charAt(offset));
-        if (children[index] == null) {
+        if (children[index] == null || children[index].size() == 0) {
             return 0;
         }
 
@@ -113,7 +112,7 @@ public class StringSetImpl implements StringSet {
         } else if (Character.isUpperCase(ch)) {
             return ch - 'A';
         } else {
-            throw new IllegalArgumentException("Illegal character.");
+            throw new IllegalArgumentException("Illegal character: " + ch);
         }
     }
 }
