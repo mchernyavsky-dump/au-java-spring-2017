@@ -64,7 +64,8 @@ public class Trie implements StringSet {
         }
 
         final int index = convertCharToIndex(element.charAt(offset));
-        return children[index] != null && children[index].contains(element, offset + 1);
+        return children[index] != null &&
+               children[index].contains(element, offset + 1);
 
     }
 
@@ -92,7 +93,8 @@ public class Trie implements StringSet {
         return result;
     }
 
-    private int howManyStartsWithPrefix(@NotNull final String prefix, final int offset) {
+    private int howManyStartsWithPrefix(@NotNull final String prefix,
+                                        final int offset) {
         if (prefix.length() == offset) {
             return numTerminalsInSubset;
         }

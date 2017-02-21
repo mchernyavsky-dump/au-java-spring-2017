@@ -107,7 +107,7 @@ public class TrieTest {
         trie.add(upperCaseLatin);
     }
 
-    @Test(expected=IllegalArgumentException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void testIllegalCharactersInString() throws Exception {
         final String illegalCharacters = " !\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~";
         trie.add(illegalCharacters);
