@@ -110,7 +110,7 @@ public class StringSetImpl implements StringSet {
         if (Character.isLowerCase(ch)) {
             return ch - 'a';
         } else if (Character.isUpperCase(ch)) {
-            return ch - 'A';
+            return ch - 'A' + ALPHABET_SIZE / 2;
         } else {
             throw new IllegalArgumentException("Illegal character: " + ch);
         }
