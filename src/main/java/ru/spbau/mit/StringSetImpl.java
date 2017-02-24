@@ -87,6 +87,9 @@ public class StringSetImpl implements StringSet {
         final boolean result = children[index].remove(element, offset + 1);
         if (result) {
             numTerminalsInSubset--;
+            if (children[index].numTerminalsInSubset == 0) {
+                children[index] = null;
+            }
         }
 
         return result;
