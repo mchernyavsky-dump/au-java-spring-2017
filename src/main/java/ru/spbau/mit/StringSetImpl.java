@@ -64,8 +64,8 @@ public class StringSetImpl implements StringSet {
         }
 
         final int index = convertCharToIndex(element.charAt(offset));
-        return !(children[index] == null || children[index].size() == 0)
-                && children[index].contains(element, offset + 1);
+        return children[index] != null
+               && children[index].contains(element, offset + 1);
     }
 
     private boolean remove(@NotNull final String element, final int offset) {
@@ -102,7 +102,7 @@ public class StringSetImpl implements StringSet {
         }
 
         final int index = convertCharToIndex(prefix.charAt(offset));
-        if (children[index] == null || children[index].size() == 0) {
+        if (children[index] == null) {
             return 0;
         }
 
