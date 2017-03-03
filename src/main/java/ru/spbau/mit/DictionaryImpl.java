@@ -108,9 +108,7 @@ public class DictionaryImpl implements Dictionary {
         values = new String[capacity];
         for (int i = 0; i < oldCapacity; i++) {
             if (oldValues[i] != null) {
-                final int index = getHashKey(oldKeys[i]);
-                keys[index] = oldKeys[i];
-                values[index] = oldValues[i];
+                put(oldKeys[i], oldValues[i]);
             }
         }
     }
