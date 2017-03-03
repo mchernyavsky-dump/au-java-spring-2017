@@ -21,10 +21,9 @@ public class DictionaryImpl implements Dictionary {
 
     @Override
     public boolean contains(@NotNull final String key) {
-        final int index = getHashKey(key);
-        for (int i = index; keys[index] != null && i < capacity; i++) {
-            if (key.equals(keys[index])) {
-                return values[index] != null;
+        for (int i = getHashKey(key); keys[i] != null && i < capacity; i++) {
+            if (key.equals(keys[i])) {
+                return values[i] != null;
             }
         }
 
@@ -34,10 +33,9 @@ public class DictionaryImpl implements Dictionary {
     @Override
     @Nullable
     public String get(@NotNull final String key) {
-        final int index = getHashKey(key);
-        for (int i = index; keys[index] != null && i < capacity; i++) {
-            if (key.equals(keys[index])) {
-                return values[index];
+        for (int i = getHashKey(key); keys[i] != null && i < capacity; i++) {
+            if (key.equals(keys[i])) {
+                return values[i];
             }
         }
 
@@ -47,12 +45,11 @@ public class DictionaryImpl implements Dictionary {
     @Override
     @Nullable
     public String put(@NotNull final String key, @NotNull final String value) {
-        final int index = getHashKey(key);
-        for (int i = index; i < capacity; i++) {
-            if (keys[index] == null || key.equals(keys[index])) {
-                final String oldValue = values[index];
-                keys[index] = key;
-                values[index] = value;
+        for (int i = getHashKey(key); i < capacity; i++) {
+            if (keys[i] == null || key.equals(keys[i])) {
+                final String oldValue = values[i];
+                keys[i] = key;
+                values[i] = value;
                 if (oldValue == null) {
                     size++;
                     balanceLoadFactor();
@@ -68,12 +65,11 @@ public class DictionaryImpl implements Dictionary {
     @Override
     @Nullable
     public String remove(@NotNull final String key) {
-        final int index = getHashKey(key);
-        for (int i = index; keys[index] != null && i < capacity; i++) {
-            if (key.equals(keys[index])) {
-                final String value = values[index];
+        for (int i = getHashKey(key); keys[i] != null && i < capacity; i++) {
+            if (key.equals(keys[i])) {
+                final String value = values[i];
                 if (value != null) {
-                    values[index] = null;
+                    values[i] = null;
                     size--;
                 }
 
