@@ -45,21 +45,23 @@ public class DictionaryImpl implements Dictionary {
     @Override
     @Nullable
     public String put(@NotNull final String key, @NotNull final String value) {
-        for (int i = getHashKey(key); i < capacity; i++) {
-            if (keys[i] == null || key.equals(keys[i])) {
-                final String oldValue = values[i];
-                keys[i] = key;
-                values[i] = value;
-                if (oldValue == null) {
-                    size++;
-                    balanceLoadFactor();
-                }
+        if (value != null) {
+            for (int i = getHashKey(key); i < capacity; i++) {
+                if (keys[i] == null || key.equals(keys[i])) {
+                    final String oldValue = values[i];
+                    keys[i] = key;
+                    values[i] = value;
+                    if (oldValue == null) {
+                        size++;
+                        balanceLoadFactor();
+                    }
 
-                return oldValue;
+                    return oldValue;
+                }
             }
         }
 
-        return null;
+        throw new IllegalStateException();
     }
 
     @Override
