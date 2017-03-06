@@ -8,7 +8,7 @@ import static java.lang.Math.abs;
 public class DictionaryImpl implements Dictionary {
     private static final int DEFAULT_BUCKETS_NUM = 1024;
 
-    private LinkedList buckets[] = new LinkedList[DEFAULT_BUCKETS_NUM];
+    private LinkedList[] buckets = new LinkedList[DEFAULT_BUCKETS_NUM];
     private int capacity = 2 * buckets.length;
     private int size;
 
