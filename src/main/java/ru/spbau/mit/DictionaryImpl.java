@@ -6,12 +6,10 @@ import org.jetbrains.annotations.Nullable;
 import static java.lang.Math.abs;
 
 public class DictionaryImpl implements Dictionary {
-    private static final int DEFAULT_DICTIONARY_SIZE = 1024;
-    private static final double LOAD_FACTOR_THRESHOLD = 0.75;
+    private static final int DEFAULT_BUCKETS_NUM = 1024;
 
-    private String[] keys = new String[DEFAULT_DICTIONARY_SIZE];
-    private String[] values = new String[DEFAULT_DICTIONARY_SIZE];
-    private int capacity = DEFAULT_DICTIONARY_SIZE;
+    private LinkedList buckets[] = new LinkedList[DEFAULT_BUCKETS_NUM];
+    private int capacity = 2 * buckets.length;
     private int size;
 
     @Override
@@ -21,97 +19,88 @@ public class DictionaryImpl implements Dictionary {
 
     @Override
     public boolean contains(@NotNull final String key) {
-        for (int i = getHashKey(key); keys[i] != null && i < capacity; i++) {
-            if (key.equals(keys[i])) {
-                return values[i] != null;
-            }
-        }
-
-        return false;
+        return findNode(key) != null;
     }
 
     @Override
     @Nullable
     public String get(@NotNull final String key) {
-        for (int i = getHashKey(key); keys[i] != null && i < capacity; i++) {
-            if (key.equals(keys[i])) {
-                return values[i];
-            }
-        }
-
-        return null;
+        final LinkedList.Node node = findNode(key);
+        return node != null ? node.getValue() : null;
     }
 
     @Override
     @Nullable
-    public String put(@NotNull final String key, @NotNull final String value) {
-        if (value != null) {
-            for (int i = getHashKey(key); i < capacity; i++) {
-                if (keys[i] == null || key.equals(keys[i])) {
-                    final String oldValue = values[i];
-                    keys[i] = key;
-                    values[i] = value;
-                    if (oldValue == null) {
-                        size++;
-                        balanceLoadFactor();
-                    }
-
-                    return oldValue;
-                }
-            }
+    public String put(@NotNull final String key,
+                      @Nullable final String value) {
+        final LinkedList.Node node = findNode(key);
+        if (node != null) {
+            final String oldValue = node.getValue();
+            node.setValue(value);
+            return oldValue;
         }
 
-        throw new IllegalStateException();
+        final int bucketNum = getBucketNum(key);
+        if (buckets[bucketNum] == null) {
+            buckets[bucketNum] = new LinkedList();
+
+        }
+
+        final LinkedList.Node newNode = new LinkedList.Node(key, value);
+        buckets[bucketNum].insert(newNode);
+        size++;
+        balanceLoadFactor();
+
+        return null;
     }
 
     @Override
     @Nullable
     public String remove(@NotNull final String key) {
-        for (int i = getHashKey(key); keys[i] != null && i < capacity; i++) {
-            if (key.equals(keys[i])) {
-                final String value = values[i];
-                if (value != null) {
-                    values[i] = null;
-                    size--;
-                }
-
-                return value;
-            }
+        final LinkedList.Node node = findNode(key);
+        if (node == null) {
+            return null;
         }
 
-        return null;
+        final int bucketNum = getBucketNum(key);
+        buckets[bucketNum].delete(key);
+        size--;
+
+        return node.getValue();
     }
 
     @Override
     public void clear() {
+        buckets = new LinkedList[buckets.length];
         size = 0;
-        for (int i = 0; i < capacity; i++) {
-            keys[i] = null;
-            values[i] = null;
-        }
+    }
+
+    @Nullable
+    private LinkedList.Node findNode(@NotNull final String key) {
+        final LinkedList bucket = buckets[getBucketNum(key)];
+        return bucket != null ? bucket.find(key) : null;
+    }
+
+    private int getBucketNum(@NotNull final String key) {
+        return abs(key.hashCode() % buckets.length);
     }
 
     private void balanceLoadFactor() {
-        if ((double) size / capacity < LOAD_FACTOR_THRESHOLD) {
+        if (size < capacity) {
             return;
         }
 
-        final int oldCapacity = capacity;
+        final LinkedList[] oldBuckets = buckets;
+        buckets = new LinkedList[capacity];
         capacity *= 2;
         size = 0;
 
-        final String[] oldKeys = keys;
-        final String[] oldValues = values;
-        keys = new String[capacity];
-        values = new String[capacity];
-        for (int i = 0; i < oldCapacity; i++) {
-            if (oldValues[i] != null) {
-                put(oldKeys[i], oldValues[i]);
+        for (LinkedList bucket : oldBuckets) {
+            for (LinkedList.Node node = bucket.getFirst();
+                 node != null; node = node.getNext()) {
+                //noinspection ConstantConditions
+                put(node.getKey(), node.getValue());
             }
         }
-    }
-
-    private int getHashKey(@NotNull final String oldKey) {
-        return abs(oldKey.hashCode() % capacity);
     }
 }
