@@ -2,7 +2,9 @@ package ru.spbau.mit;
 
 import org.jetbrains.annotations.NotNull;
 
-public class StringSetImpl implements StringSet {
+import java.io.*;
+
+public class StringSetImpl implements StringSet, StreamSerializable {
     private static final int ALPHABET_SIZE = 52;
 
     private StringSetImpl[] children = new StringSetImpl[ALPHABET_SIZE];
@@ -32,6 +34,43 @@ public class StringSetImpl implements StringSet {
     @Override
     public int howManyStartsWithPrefix(@NotNull final String prefix) {
         return howManyStartsWithPrefix(prefix, 0);
+    }
+
+    @Override
+    public void serialize(@NotNull final OutputStream out) {
+        final DataOutputStream dataOut = new DataOutputStream(out);
+        try {
+            dataOut.writeBoolean(isTerminal);
+            dataOut.writeInt(numTerminalsInSubset);
+            for (StringSetImpl child : children) {
+                if (child == null) {
+                    dataOut.writeBoolean(false);
+                } else {
+                    dataOut.writeBoolean(true);
+                    child.serialize(out);
+                }
+            }
+        } catch (IOException e) {
+            throw new SerializationException(e);
+        }
+    }
+
+    @Override
+    public void deserialize(@NotNull final InputStream in) {
+        final DataInputStream dataIn = new DataInputStream(in);
+        try {
+            isTerminal = dataIn.readBoolean();
+            numTerminalsInSubset = dataIn.readInt();
+            for (int i = 0; i < ALPHABET_SIZE; i++) {
+                final boolean childExists = dataIn.readBoolean();
+                if (childExists) {
+                    children[i] = new StringSetImpl();
+                    children[i].deserialize(in);
+                }
+            }
+        } catch (IOException e) {
+            throw new SerializationException(e);
+        }
     }
 
     private boolean add(@NotNull final String element, final int offset) {
