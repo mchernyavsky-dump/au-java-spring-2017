@@ -39,7 +39,7 @@ public class StringSetTest {
     }
 
 
-    @Test(expected=SerializationException.class)
+    @Test(expected = SerializationException.class)
     public void testSimpleSerializationFails() {
         StringSet stringSet = instance();
 
