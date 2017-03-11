@@ -33,14 +33,12 @@ public class StringSetTest {
 
     @Test
     public void testSerializationSimple() throws IOException {
-        assertTrue(stringSet.add("abc"));
-        assertTrue(stringSet.add("cde"));
+        stringSet.add("abc");
+        stringSet.add("cde");
         stringSet.serialize(output);
         output.close();
         deserializedStringSet.deserialize(input);
-        assertTrue(deserializedStringSet.contains("abc"));
-        assertTrue(deserializedStringSet.contains("cde"));
-        assertEquals(stringSet.size(), deserializedStringSet.size());
+        assertEquals(stringSet, deserializedStringSet);
     }
 
     @Test
@@ -48,22 +46,18 @@ public class StringSetTest {
         stringSet.serialize(output);
         output.close();
         deserializedStringSet.deserialize(input);
-        assertEquals(stringSet.size(), deserializedStringSet.size());
+        assertEquals(stringSet, deserializedStringSet);
     }
 
     @Test
     public void testSerializationDeep() throws IOException {
-        assertTrue(stringSet.add(""));
-        assertTrue(stringSet.add("a"));
-        assertTrue(stringSet.add("abc"));
+        stringSet.add("");
+        stringSet.add("a");
+        stringSet.add("abc");
         stringSet.serialize(output);
         output.close();
         deserializedStringSet.deserialize(input);
-        assertTrue(deserializedStringSet.contains(""));
-        assertTrue(deserializedStringSet.contains("a"));
-        assertFalse(deserializedStringSet.contains("ab"));
-        assertTrue(deserializedStringSet.contains("abc"));
-        assertEquals(stringSet.size(), deserializedStringSet.size());
+        assertEquals(stringSet, deserializedStringSet);
     }
 
 
