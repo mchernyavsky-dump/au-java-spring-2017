@@ -3,6 +3,7 @@ package ru.spbau.mit;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.*;
+import java.util.Arrays;
 
 public class StringSetImpl implements StringSet, StreamSerializable {
     private static final int ALPHABET_SIZE = 52;
@@ -71,6 +72,16 @@ public class StringSetImpl implements StringSet, StreamSerializable {
         } catch (IOException e) {
             throw new SerializationException(e);
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        StringSetImpl stringSet = (StringSetImpl) o;
+        return isTerminal == stringSet.isTerminal &&
+                numTerminalsInSubset == stringSet.numTerminalsInSubset &&
+                Arrays.equals(children, stringSet.children);
     }
 
     private boolean add(@NotNull final String element, final int offset) {
