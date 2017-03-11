@@ -1,71 +1,70 @@
 package ru.spbau.mit;
 
 import static org.junit.Assert.*;
+
+import org.junit.Before;
 import org.junit.Test;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
 
 public class StringSetTest {
+    private StringSetImpl stringSet;
 
-    @Test
-    public void testSimple() {
-        StringSet stringSet = instance();
-
-        assertTrue(stringSet.add("abc"));
-        assertTrue(stringSet.contains("abc"));
-        assertEquals(1, stringSet.size());
-        assertEquals(1, stringSet.howManyStartsWithPrefix("abc"));
+    @Before
+    public void setUp() throws Exception {
+        stringSet = new StringSetImpl();
     }
 
     @Test
-    public void testSimpleSerialization() {
-        StringSet stringSet = instance();
-
+    public void tesSerializationSimple() {
         assertTrue(stringSet.add("abc"));
         assertTrue(stringSet.add("cde"));
+        final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        stringSet.serialize(outputStream);
 
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        ((StreamSerializable) stringSet).serialize(outputStream);
-
-        ByteArrayInputStream inputStream = new ByteArrayInputStream(outputStream.toByteArray());
-        StringSet newStringSet = instance();
-        ((StreamSerializable) newStringSet).deserialize(inputStream);
-
+        final ByteArrayInputStream inputStream = new ByteArrayInputStream(outputStream.toByteArray());
+        final StringSetImpl newStringSet = new StringSetImpl();
+        newStringSet.deserialize(inputStream);
         assertTrue(newStringSet.contains("abc"));
         assertTrue(newStringSet.contains("cde"));
     }
 
+    @Test
+    public void testSerializationEmpty() {
+        final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        stringSet.serialize(outputStream);
 
-    @Test(expected = SerializationException.class)
-    public void testSimpleSerializationFails() {
-        StringSet stringSet = instance();
-
-        assertTrue(stringSet.add("abc"));
-        assertTrue(stringSet.add("cde"));
-
-        OutputStream outputStream = new OutputStream() {
-            @Override
-            public void write(int b) throws IOException {
-                throw new IOException("Fail");
-            }
-        };
-
-        ((StreamSerializable) stringSet).serialize(outputStream);
+        final ByteArrayInputStream inputStream = new ByteArrayInputStream(outputStream.toByteArray());
+        final StringSetImpl newStringSet = new StringSetImpl();
+        newStringSet.deserialize(inputStream);
+        assertEquals(0, newStringSet.size());
     }
 
-    public static StringSet instance() {
-        try {
-            return (StringSet) Class.forName("ru.spbau.mit.StringSetImpl").newInstance();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-        throw new IllegalStateException("Error while class loading");
+    @Test
+    public void tesSerializationDeep() {
+        assertTrue(stringSet.add(""));
+        assertTrue(stringSet.add("a"));
+        assertTrue(stringSet.add("abc"));
+        final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        stringSet.serialize(outputStream);
+
+        final ByteArrayInputStream inputStream = new ByteArrayInputStream(outputStream.toByteArray());
+        final StringSetImpl newStringSet = new StringSetImpl();
+        newStringSet.deserialize(inputStream);
+        assertTrue(newStringSet.contains(""));
+        assertTrue(newStringSet.contains("a"));
+        assertFalse(newStringSet.contains("ab"));
+        assertTrue(newStringSet.contains("abc"));
+    }
+
+
+    @Test(expected = SerializationException.class)
+    public void testSerializationFails() {
+        byte[] buf = {0};
+        final ByteArrayInputStream inputStream = new ByteArrayInputStream(buf);
+        final StringSetImpl newStringSet = new StringSetImpl();
+        newStringSet.deserialize(inputStream);
+        fail();
     }
 }
