@@ -75,13 +75,24 @@ public class StringSetImpl implements StringSet, StreamSerializable {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        StringSetImpl stringSet = (StringSetImpl) o;
-        return isTerminal == stringSet.isTerminal &&
-                numTerminalsInSubset == stringSet.numTerminalsInSubset &&
-                Arrays.equals(children, stringSet.children);
+    public boolean equals(final Object object) {
+        if (this == object) {
+            return true;
+        }
+
+        if (object == null || getClass() != object.getClass()) {
+            return false;
+        }
+
+        final StringSetImpl another = (StringSetImpl) object;
+        return isTerminal == another.isTerminal
+                && numTerminalsInSubset == another.numTerminalsInSubset
+                && Arrays.equals(children, another.children);
+    }
+
+    @Override
+    public int hashCode() {
+        return 42;
     }
 
     private boolean add(@NotNull final String element, final int offset) {
