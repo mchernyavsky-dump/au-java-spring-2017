@@ -92,7 +92,7 @@ public class StringSetImpl implements StringSet, StreamSerializable {
 
     @Override
     public int hashCode() {
-        return 42;
+        return 0;
     }
 
     private boolean add(@NotNull final String element, final int offset) {
