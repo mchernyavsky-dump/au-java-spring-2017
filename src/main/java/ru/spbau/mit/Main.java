@@ -14,4 +14,7 @@ public class Main {
         LOG.error("Error Message!"); // file
         LOG.fatal("Fatal Message!"); // console
     }
+
+    private Main() {
+    }
 }
