@@ -6,9 +6,6 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Objects;
 
 final class TestUtils {
-    private TestUtils() {
-    }
-
     @NotNull
     static final Function1<Boolean, Boolean> NOT = new Function1<>() {
         @Override
@@ -84,4 +81,7 @@ final class TestUtils {
             return arg1 != null && arg2 != null ? arg1 - arg2 : null;
         }
     };
+
+    private TestUtils() {
+    }
 }
