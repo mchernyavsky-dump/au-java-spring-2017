@@ -32,10 +32,12 @@ public class CollectionsTest {
     @Test
     public void testTakeWhile() {
         final Predicate<Integer> isLessThan3 = new Predicate<>() {
+            private static final int THREE = 3;
+
             @Nullable
             @Override
             Boolean apply(@Nullable final Integer arg) {
-                return arg != null ? arg < 3 : null;
+                return arg != null ? arg < THREE : null;
             }
         };
 
@@ -47,10 +49,12 @@ public class CollectionsTest {
     @Test
     public void testTakeUnless() {
         final Predicate<Integer> isGreaterThan2 = new Predicate<>() {
+            private static final int TWO = 2;
+
             @Nullable
             @Override
             Boolean apply(@Nullable final Integer arg) {
-                return arg != null ? arg > 2 : null;
+                return arg != null ? arg > TWO : null;
             }
         };
 
