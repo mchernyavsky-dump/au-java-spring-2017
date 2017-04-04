@@ -31,7 +31,7 @@ public class CollectionsTest {
 
     @Test
     public void testTakeWhile() {
-        final Predicate<Integer> isLessThan3 = new Predicate<>() {
+        final Predicate<Integer> isLessThan3 = new Predicate<Integer>() {
             private static final int THREE = 3;
 
             @Nullable
@@ -48,7 +48,7 @@ public class CollectionsTest {
 
     @Test
     public void testTakeUnless() {
-        final Predicate<Integer> isGreaterThan2 = new Predicate<>() {
+        final Predicate<Integer> isGreaterThan2 = new Predicate<Integer>() {
             private static final int TWO = 2;
 
             @Nullable

@@ -8,9 +8,8 @@ public abstract class Function2<A, B, C> {
     abstract C apply(@Nullable final A arg1, @Nullable final B arg2);
 
     @NotNull
-    public <D> Function2<? super A, ? super B, ? extends D>
-    compose(@NotNull final Function1<? super C, ? extends D> other) {
-        return new Function2<>() {
+    public <D> Function2<A, B, D> compose(@NotNull final Function1<? super C, ? extends D> other) {
+        return new Function2<A, B, D>() {
             @Nullable
             @Override
             D apply(@Nullable final A arg1, @Nullable final B arg2) {
@@ -20,8 +19,8 @@ public abstract class Function2<A, B, C> {
     }
 
     @NotNull
-    public Function1<? super B, ? extends C> bind1(@Nullable final A arg1) {
-        return new Function1<>() {
+    public Function1<B, C> bind1(@Nullable final A arg1) {
+        return new Function1<B, C>() {
             @Nullable
             @Override
             C apply(@Nullable final B arg2) {
@@ -31,8 +30,8 @@ public abstract class Function2<A, B, C> {
     }
 
     @NotNull
-    public Function1<? super A, ? extends C> bind2(@Nullable final B arg2) {
-        return new Function1<>() {
+    public Function1<A, C> bind2(@Nullable final B arg2) {
+        return new Function1<A, C>() {
             @Nullable
             @Override
             C apply(@Nullable final A arg1) {
@@ -42,11 +41,11 @@ public abstract class Function2<A, B, C> {
     }
 
     @NotNull
-    public Function1<? super A, Function1<? super B, ? extends C>> curry() {
-        return new Function1<>() {
+    public Function1<A, Function1<B, C>> curry() {
+        return new Function1<A, Function1<B, C>>() {
             @NotNull
             @Override
-            Function1<? super B, ? extends C> apply(@Nullable final A arg1) {
+            Function1<B, C> apply(@Nullable final A arg1) {
                 return Function2.this.bind1(arg1);
             }
         };

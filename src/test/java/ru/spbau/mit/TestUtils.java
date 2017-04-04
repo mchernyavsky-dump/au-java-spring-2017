@@ -7,7 +7,7 @@ import java.util.Objects;
 
 final class TestUtils {
     @NotNull
-    static final Function1<Boolean, Boolean> NOT = new Function1<>() {
+    static final Function1<Boolean, Boolean> NOT = new Function1<Boolean, Boolean>() {
         @Override
         Boolean apply(@Nullable final Boolean arg) {
             return arg != null && !arg;
@@ -15,7 +15,7 @@ final class TestUtils {
     };
 
     @NotNull
-    static final Function1<Object, String> TO_STRING = new Function1<>() {
+    static final Function1<Object, String> TO_STRING = new Function1<Object, String>() {
         @Override
         String apply(@Nullable final Object arg) {
             return Objects.toString(arg);
@@ -23,7 +23,7 @@ final class TestUtils {
     };
 
     @NotNull
-    static final Function2<Boolean, Boolean, Boolean> AND = new Function2<>() {
+    static final Function2<Boolean, Boolean, Boolean> AND = new Function2<Boolean, Boolean, Boolean>() {
         @Nullable
         @Override
         Boolean apply(@Nullable final Boolean arg1, @Nullable final Boolean arg2) {
@@ -32,7 +32,7 @@ final class TestUtils {
     };
 
     @NotNull
-    static final Predicate<Boolean> IS_TRUE = new Predicate<>() {
+    static final Predicate<Boolean> IS_TRUE = new Predicate<Boolean>() {
         @Override
         public Boolean apply(@Nullable final Boolean arg) {
             return arg != null && arg;
@@ -40,7 +40,7 @@ final class TestUtils {
     };
 
     @NotNull
-    static final Predicate<Boolean> IS_FALSE = new Predicate<>() {
+    static final Predicate<Boolean> IS_FALSE = new Predicate<Boolean>() {
         @Override
         public Boolean apply(@Nullable final Boolean arg) {
             return arg != null && !arg;
@@ -48,7 +48,7 @@ final class TestUtils {
     };
 
     @NotNull
-    static final Predicate<Boolean> ALWAYS_THROW = new Predicate<>() {
+    static final Predicate<Boolean> ALWAYS_THROW = new Predicate<Boolean>() {
         @Override
         public Boolean apply(@Nullable final Boolean arg) {
             throw new IllegalStateException();
@@ -56,7 +56,7 @@ final class TestUtils {
     };
 
     @NotNull
-    static final Function1<Integer, Integer> DOUBLE_NUM = new Function1<>() {
+    static final Function1<Integer, Integer> DOUBLE_NUM = new Function1<Integer, Integer>() {
         @Nullable
         @Override
         Integer apply(@Nullable final Integer arg) {
@@ -65,7 +65,7 @@ final class TestUtils {
     };
 
     @NotNull
-    static final Predicate<Integer> IS_EVEN = new Predicate<>() {
+    static final Predicate<Integer> IS_EVEN = new Predicate<Integer>() {
         @Nullable
         @Override
         Boolean apply(@Nullable final Integer arg) {
@@ -74,7 +74,7 @@ final class TestUtils {
     };
 
     @NotNull
-    static final Function2<Integer, Integer, Integer> SUBTRACTION = new Function2<>() {
+    static final Function2<Integer, Integer, Integer> SUBTRACTION = new Function2<Integer, Integer, Integer>() {
         @Nullable
         @Override
         Integer apply(@Nullable final Integer arg1, @Nullable final Integer arg2) {

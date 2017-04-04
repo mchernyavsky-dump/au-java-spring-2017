@@ -3,7 +3,9 @@ package ru.spbau.mit;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -12,32 +14,39 @@ public final class Collections {
     }
 
     @NotNull
-    public static <T, R> Iterable<? extends R> map(@NotNull final Function1<? super T, ? extends R> function,
-                                                   @NotNull final Iterable<? extends T> iter) {
+    public static <T, R> Iterable<R> map(@NotNull final Function1<? super T, ? extends R> function,
+                                         @NotNull final Iterable<? extends T> iter) {
         return StreamSupport.stream(iter.spliterator(), false)
                 .map(function::apply)
                 .collect(Collectors.toList());
     }
 
     @NotNull
-    public static <T> Iterable<? extends T> filter(@NotNull final Predicate<? super T> predicate,
-                                                   @NotNull final Iterable<? extends T> iter) {
+    public static <T> Iterable<T> filter(@NotNull final Predicate<? super T> predicate,
+                                         @NotNull final Iterable<? extends T> iter) {
         return StreamSupport.stream(iter.spliterator(), false)
                 .filter(predicate::apply)
                 .collect(Collectors.toList());
     }
 
     @NotNull
-    public static <T> Iterable<? extends T> takeWhile(@NotNull final Predicate<? super T> predicate,
-                                                      @NotNull final Iterable<? extends T> iter) {
-        return StreamSupport.stream(iter.spliterator(), false)
-                .takeWhile(predicate::apply)
-                .collect(Collectors.toList());
+    public static <T> Iterable<T> takeWhile(@NotNull final Predicate<? super T> predicate,
+                                            @NotNull final Iterable<? extends T> iter) {
+        final List<T> tmp = new ArrayList<>();
+        for (T item : iter) {
+            if (!predicate.apply(item)) {
+                break;
+            }
+
+            tmp.add(item);
+        }
+
+        return tmp;
     }
 
     @NotNull
-    public static <T> Iterable<? extends T> takeUnless(@NotNull final Predicate<? super T> predicate,
-                                                       @NotNull final Iterable<? extends T> iter) {
+    public static <T> Iterable<T> takeUnless(@NotNull final Predicate<? super T> predicate,
+                                             @NotNull final Iterable<? extends T> iter) {
         return takeWhile(predicate.not(), iter);
     }
 
