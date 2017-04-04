@@ -11,16 +11,6 @@ import static ru.spbau.mit.TestUtils.*;
 
 @RunWith(JUnitParamsRunner.class)
 public class Function2Test {
-    @NotNull
-    private static Object[] andTruthTable() {
-        return new Object[]{
-                new Object[]{false, false, false},
-                new Object[]{false, true, false},
-                new Object[]{true, false, false},
-                new Object[]{true, true, true}
-        };
-    }
-
     @Test
     @Parameters(method = "andTruthTable")
     public void testApply(final boolean arg1, final boolean arg2, final boolean expected) {
@@ -54,5 +44,15 @@ public class Function2Test {
     public void testCurry(final boolean arg1, final boolean arg2, final boolean expected) {
         final Boolean actual = AND.curry().apply(arg1).apply(arg2);
         assertEquals(expected, actual);
+    }
+
+    @NotNull
+    private Object[] andTruthTable() {
+        return new Object[]{
+                new Object[]{false, false, false},
+                new Object[]{false, true, false},
+                new Object[]{true, false, false},
+                new Object[]{true, true, true}
+        };
     }
 }
