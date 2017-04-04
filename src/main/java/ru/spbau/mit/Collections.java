@@ -32,16 +32,16 @@ public final class Collections {
     @NotNull
     public static <T> Iterable<T> takeWhile(@NotNull final Predicate<? super T> predicate,
                                             @NotNull final Iterable<? extends T> iter) {
-        final List<T> tmp = new ArrayList<>();
+        final List<T> buffer = new ArrayList<>();
         for (T item : iter) {
             if (!predicate.apply(item)) {
                 break;
             }
 
-            tmp.add(item);
+            buffer.add(item);
         }
 
-        return tmp;
+        return buffer;
     }
 
     @NotNull
