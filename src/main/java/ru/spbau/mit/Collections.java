@@ -6,8 +6,6 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 public final class Collections {
     private Collections() {
@@ -16,17 +14,25 @@ public final class Collections {
     @NotNull
     public static <T, R> Iterable<R> map(@NotNull final Function1<? super T, ? extends R> function,
                                          @NotNull final Iterable<? extends T> iter) {
-        return StreamSupport.stream(iter.spliterator(), false)
-                .map(function::apply)
-                .collect(Collectors.toList());
+        final List<R> buffer = new ArrayList<>();
+        for (T item : iter) {
+            buffer.add(function.apply(item));
+        }
+
+        return buffer;
     }
 
     @NotNull
     public static <T> Iterable<T> filter(@NotNull final Predicate<? super T> predicate,
                                          @NotNull final Iterable<? extends T> iter) {
-        return StreamSupport.stream(iter.spliterator(), false)
-                .filter(predicate::apply)
-                .collect(Collectors.toList());
+        final List<T> buffer = new ArrayList<>();
+        for (T item : iter) {
+            if (predicate.apply(item)) {
+                buffer.add(item);
+            }
+        }
+
+        return buffer;
     }
 
     @NotNull
