@@ -1,5 +1,6 @@
 package ru.spbau.mit;
 
+import org.jetbrains.annotations.Nullable;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -34,5 +35,29 @@ public class PredicateTest {
     @Test
     public void testAlwaysFalse() {
         assertFalse(Predicate.ALWAYS_FALSE.apply(null));
+    }
+
+    /** Wildcard "tests" */
+
+    @Test
+    public void testOrAndWildcard() {
+        final Predicate<B> predicate1 = new Predicate<B>() {
+            @Nullable
+            @Override
+            Boolean apply(@Nullable final B arg) {
+                return null;
+            }
+        };
+
+        final Predicate<A> predicate2 = new Predicate<A>() {
+            @Nullable
+            @Override
+            Boolean apply(@Nullable final A arg) {
+                return null;
+            }
+        };
+
+        final Predicate<B> actual1 = predicate1.or(predicate2);
+        final Predicate<B> actual2 = predicate1.and(predicate2);
     }
 }

@@ -3,6 +3,7 @@ package ru.spbau.mit;
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -54,5 +55,27 @@ public class Function2Test {
                 new Object[]{true, false, false},
                 new Object[]{true, true, true}
         };
+    }
+
+    /** Wildcard "tests" */
+
+    @Test
+    public void testComposeWildcard() {
+        final Function2<A, A, C> function1 = new Function2<A, A, C>() {
+            @Nullable
+            @Override
+            C apply(@Nullable final A arg1, @Nullable final A arg2) {
+                return null;
+            }
+        };
+
+        final Function1<B, B> function2 = new Function1<B, B>() {
+            @Override
+            B apply(@Nullable final B arg) {
+                return null;
+            }
+        };
+
+        final B actual = function1.compose(function2).apply(new A(), new A());
     }
 }

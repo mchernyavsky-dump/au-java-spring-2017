@@ -8,6 +8,7 @@ import java.util.List;
 
 import static java.util.Arrays.asList;
 
+import static java.util.Collections.singletonList;
 import static org.junit.Assert.*;
 import static ru.spbau.mit.TestUtils.*;
 
@@ -75,5 +76,73 @@ public class CollectionsTest {
         final Integer expected = -3;
         final Integer actual = Collections.foldr(SUBTRACTION, 0, NUMBERS);
         assertEquals(expected, actual);
+    }
+
+    /** Wildcard "tests" */
+
+    @Test
+    public void testMapWildcard() {
+        final List<B> actual = Collections.map(new Function1<A, B>() {
+            @Nullable
+            @Override
+            C apply(@Nullable final A arg) {
+                return null;
+            }
+        }, singletonList(new B()));
+    }
+
+    @Test
+    public void testFilterWildcard() {
+        final List<B> actual = Collections.filter(new Predicate<A>() {
+            @NotNull
+            @Override
+            Boolean apply(@Nullable final A arg) {
+                return false;
+            }
+        }, singletonList(new B()));
+    }
+
+    @Test
+    public void testTakeWhileWildcard() {
+        final List<B> actual = Collections.takeWhile(new Predicate<A>() {
+            @NotNull
+            @Override
+            Boolean apply(@Nullable final A arg) {
+                return false;
+            }
+        }, singletonList(new B()));
+    }
+
+    @Test
+    public void testTakeUnlessWildcard() {
+        final List<B> actual = Collections.takeUnless(new Predicate<A>() {
+            @NotNull
+            @Override
+            Boolean apply(@Nullable final A arg) {
+                return false;
+            }
+        }, singletonList(new B()));
+    }
+
+    @Test
+    public void testFoldlWildcard() {
+        final B actual = Collections.foldl(new Function2<A, A, C>() {
+            @Nullable
+            @Override
+            C apply(@Nullable final A arg1, @Nullable final A arg2) {
+                return null;
+            }
+        }, new B(), singletonList(new C()));
+    }
+
+    @Test
+    public void testFoldrWildcard() {
+        final B actual = Collections.foldr(new Function2<A, A, C>() {
+            @Nullable
+            @Override
+            C apply(@Nullable final A arg1, @Nullable final A arg2) {
+                return null;
+            }
+        }, new B(), singletonList(new B()));
     }
 }

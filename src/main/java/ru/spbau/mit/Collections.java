@@ -12,8 +12,8 @@ public final class Collections {
     }
 
     @NotNull
-    public static <T, R> Iterable<R> map(@NotNull final Function1<? super T, ? extends R> function,
-                                         @NotNull final Iterable<? extends T> iter) {
+    public static <T, R> List<R> map(@NotNull final Function1<? super T, R> function,
+                                     @NotNull final Iterable<? extends T> iter) {
         final List<R> buffer = new ArrayList<>();
         for (T item : iter) {
             buffer.add(function.apply(item));
@@ -23,8 +23,8 @@ public final class Collections {
     }
 
     @NotNull
-    public static <T> Iterable<T> filter(@NotNull final Predicate<? super T> predicate,
-                                         @NotNull final Iterable<? extends T> iter) {
+    public static <T> List<T> filter(@NotNull final Predicate<? super T> predicate,
+                                     @NotNull final Iterable<? extends T> iter) {
         final List<T> buffer = new ArrayList<>();
         for (T item : iter) {
             if (predicate.apply(item)) {
@@ -36,8 +36,8 @@ public final class Collections {
     }
 
     @NotNull
-    public static <T> Iterable<T> takeWhile(@NotNull final Predicate<? super T> predicate,
-                                            @NotNull final Iterable<? extends T> iter) {
+    public static <T> List<T> takeWhile(@NotNull final Predicate<? super T> predicate,
+                                        @NotNull final Iterable<? extends T> iter) {
         final List<T> buffer = new ArrayList<>();
         for (T item : iter) {
             if (!predicate.apply(item)) {
@@ -51,8 +51,8 @@ public final class Collections {
     }
 
     @NotNull
-    public static <T> Iterable<T> takeUnless(@NotNull final Predicate<? super T> predicate,
-                                             @NotNull final Iterable<? extends T> iter) {
+    public static <T> List<T> takeUnless(@NotNull final Predicate<? super T> predicate,
+                                         @NotNull final Iterable<? extends T> iter) {
         return takeWhile(predicate.not(), iter);
     }
 
@@ -64,9 +64,9 @@ public final class Collections {
     }
 
     @Nullable
-    public static <T, I> I foldr(@NotNull final Function2<T, I, I> combiner,
+    public static <T, I> I foldr(@NotNull final Function2<? super T, ? super I, ? extends I> combiner,
                                  @Nullable final I initial,
-                                 @NotNull final Iterable<T> iter) {
+                                 @NotNull final Iterable<? extends T> iter) {
         return foldr(combiner, initial, iter.iterator());
     }
 

@@ -6,6 +6,18 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Objects;
 
 final class TestUtils {
+    private TestUtils() {
+    }
+
+    static class A {
+    }
+
+    static class B extends A {
+    }
+
+    static class C extends B {
+    }
+
     @NotNull
     static final Function1<Boolean, Boolean> NOT = new Function1<Boolean, Boolean>() {
         @Override
@@ -82,6 +94,12 @@ final class TestUtils {
         }
     };
 
-    private TestUtils() {
-    }
+    @NotNull
+    static final Function1<Object, Object> IDENTITY = new Function1<Object, Object>() {
+        @Nullable
+        @Override
+        Object apply(@Nullable final Object arg) {
+            return arg;
+        }
+    };
 }
