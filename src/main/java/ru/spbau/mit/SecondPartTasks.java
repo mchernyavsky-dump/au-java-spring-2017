@@ -35,8 +35,8 @@ public final class SecondPartTasks {
         final Random random = new Random();
         final double radius = 0.5;
         final int numTrial = 1000000;
-        return Stream.generate(() -> Math.pow(random.nextFloat() - radius, 2) +
-                                     Math.pow(random.nextFloat() - radius, 2) < Math.pow(radius, 2))
+        return Stream.generate(() -> Math.pow(random.nextFloat() - radius, 2)
+                                   + Math.pow(random.nextFloat() - radius, 2) < Math.pow(radius, 2))
                 .mapToInt(result -> result ? 1 : 0)
                 .limit(numTrial)
                 .average()
