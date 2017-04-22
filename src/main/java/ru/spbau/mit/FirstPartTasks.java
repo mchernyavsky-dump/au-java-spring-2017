@@ -37,11 +37,11 @@ public final class FirstPartTasks {
 
     // Список альбомов, в которых есть хотя бы один трек с рейтингом более 95, отсортированный по названию
     public static List<Album> sortedFavorites(Stream<Album> albums) {
-        final int MAGIC_CONST = 95;
+        final int threshold = 95;
         return albums
                 .filter(album -> album.getTracks().stream()
                         .map(Track::getRating)
-                        .anyMatch(rating -> rating > MAGIC_CONST)
+                        .anyMatch(rating -> rating > threshold)
                 )
                 .sorted(Comparator.comparing(Album::getName))
                 .collect(Collectors.toList());
