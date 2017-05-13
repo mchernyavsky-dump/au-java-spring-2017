@@ -34,10 +34,11 @@ public class SimpleImplementor implements Implementor {
             @NotNull final String className
     ) throws ImplementorException {
         final Class<?> clazz = loadClassFromDirectory(directoryPath, className);
+        final Package classPackage = clazz.getPackage();
         final StringBuffer buffer = new StringBuffer();
-        appendPackage(buffer, clazz.getPackage());
+        appendPackage(buffer, classPackage);
         appendClass(buffer, clazz);
-        writeToFile(buffer, clazz.getPackage().getName(), clazz.getSimpleName());
+        writeToFile(buffer, classPackage != null ? classPackage.getName() : "", clazz.getSimpleName());
         return clazz.getCanonicalName() + "Impl";
     }
 
