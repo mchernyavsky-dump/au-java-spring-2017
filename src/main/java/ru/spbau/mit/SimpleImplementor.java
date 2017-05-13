@@ -1,6 +1,7 @@
 package ru.spbau.mit;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -90,9 +91,9 @@ public class SimpleImplementor implements Implementor {
 
     private void appendPackage(
             @NotNull final StringBuffer buffer,
-            @NotNull final Package classPackage
+            @Nullable final Package classPackage
     ) {
-        if (!classPackage.getName().isEmpty()) {
+        if (classPackage != null && !classPackage.getName().isEmpty()) {
             buffer.append(classPackage).append(";\n\n");
         }
     }
