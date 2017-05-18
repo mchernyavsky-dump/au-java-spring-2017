@@ -88,6 +88,16 @@ public class ImplementorTest {
         checkAbstractClassImplementationFromStandardLibrary("java.util.AbstractCollection");
     }
 
+    @Test
+    public void implementImplementor() throws Exception {
+        checkInterfaceImplementationFromFolder("ru.spbau.mit.Implementor");
+    }
+
+    @Test
+    public void implementAbstractImplementor() throws Exception {
+        checkAbstractClassImplementationFromFolder("ru.spbau.mit.AbstractImplementor");
+    }
+
     private void checkInterfaceImplementationFromFolder(String className) throws Exception {
         Implementor implementor = newImplementor();
         String implClassName = implementor.implementFromDirectory(getTestsDirectoryPath(), className);
