@@ -49,7 +49,7 @@ public final class Injector {
         final Constructor<?> constructor = clazz.getConstructors()[0];
         final List<Object> initargs = new ArrayList<>();
         for (Class<?> paramClazz : constructor.getParameterTypes()) {
-            if (paramClazz.isAssignableFrom(clazz)) {
+            if (clazz.isAssignableFrom(paramClazz) || paramClazz.isAssignableFrom(clazz)) {
                 throw new InjectionCycleException();
             }
 
