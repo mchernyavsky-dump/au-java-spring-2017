@@ -34,7 +34,7 @@ public final class Injector {
     ) throws IllegalAccessException, InvocationTargetException, InstantiationException,
             AmbiguousImplementationException, ImplementationNotFoundException, InjectionCycleException {
         for (Class<?> dependency : dependencies) {
-            if (clazz.isAssignableFrom(dependency)) {
+            if (dependency.isAssignableFrom(clazz)) {
                 throw new InjectionCycleException();
             }
         }
