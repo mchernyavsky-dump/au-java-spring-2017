@@ -59,7 +59,6 @@ public final class Injector {
         final Object instance = constructor.newInstance(initargs.toArray());
         cache.add(instance);
         dependencies.remove(clazz);
-        
         return instance;
     }
 
