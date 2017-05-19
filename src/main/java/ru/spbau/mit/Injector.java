@@ -33,9 +33,12 @@ public final class Injector {
             final Set<Object> cache
     ) throws IllegalAccessException, InvocationTargetException, InstantiationException,
             AmbiguousImplementationException, ImplementationNotFoundException, InjectionCycleException {
-        if (!dependencies.add(clazz)) {
-            throw new InjectionCycleException();
+        for (Class<?> dependency : dependencies) {
+            if (clazz.isAssignableFrom(dependency)) {
+                throw new InjectionCycleException();
+            }
         }
+        dependencies.add(clazz);
 
         for (Object impl : cache) {
             if (clazz.isAssignableFrom(impl.getClass())) {
