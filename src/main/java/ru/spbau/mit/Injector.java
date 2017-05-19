@@ -34,7 +34,7 @@ public final class Injector {
     ) throws IllegalAccessException, InvocationTargetException, InstantiationException,
             AmbiguousImplementationException, ImplementationNotFoundException, InjectionCycleException {
         for (Class<?> dependency : dependencies) {
-            if (dependency.isAssignableFrom(clazz)) {
+            if (clazz.isAssignableFrom(dependency)) {
                 throw new InjectionCycleException();
             }
         }
@@ -49,6 +49,10 @@ public final class Injector {
         final Constructor<?> constructor = clazz.getConstructors()[0];
         final List<Object> initargs = new ArrayList<>();
         for (Class<?> paramClazz : constructor.getParameterTypes()) {
+            if (paramClazz.isAssignableFrom(clazz)) {
+                throw new InjectionCycleException();
+            }
+
             final Object param = implementationClasses.contains(paramClazz)
                     ? newInstance(paramClazz, implementationClasses, dependencies, cache)
                     : assignableNewInstance(paramClazz, implementationClasses, dependencies, cache);
